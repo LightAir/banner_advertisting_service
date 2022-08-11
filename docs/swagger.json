@@ -1,0 +1,421 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a Banner Advertising Service",
+        "title": "Banner Advertising Service",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8000",
+    "basePath": "/",
+    "paths": {
+        "/": {
+            "get": {
+                "description": "Проверит доступность сервиса по показу баннерной рекламы",
+                "tags": [
+                    "Base"
+                ],
+                "summary": "Доступность сервиса",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/http.TypicalResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/api/v1/banner": {
+            "post": {
+                "description": "Добавляет новый баннер",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Banners"
+                ],
+                "summary": "Добавить баннер",
+                "parameters": [
+                    {
+                        "description": "Banner description",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/http.BaseAdminDescriptionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/http.TypicalResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/api/v1/banner-slot": {
+            "post": {
+                "description": "Добавляет новый баннер в ротацию в данном слоте",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Добавить баннер в ротацию",
+                "parameters": [
+                    {
+                        "description": "BannerID and SlotID",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/http.BannerSlotRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/http.TypicalResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            },
+            "delete": {
+                "description": "Удаляет баннер из ротации в данном слоте",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Удалить баннер из ротации",
+                "parameters": [
+                    {
+                        "description": "SlotID and BannerID",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/http.BannerSlotRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/http.TypicalResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/api/v1/banner/{id}": {
+            "delete": {
+                "description": "Удаляет баннер",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Banners"
+                ],
+                "summary": "Удалить баннер",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Banner ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/http.TypicalResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/api/v1/group": {
+            "post": {
+                "description": "Добавляет новую Социал-демографическую группу",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Groups"
+                ],
+                "summary": "Добавить группу",
+                "parameters": [
+                    {
+                        "description": "SDGroupID description",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/http.BaseAdminDescriptionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/http.TypicalResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/api/v1/group/{id}": {
+            "delete": {
+                "description": "Удаляет Социал-демографическую группу",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Groups"
+                ],
+                "summary": "Удалить группу",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "SDGroupID ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/http.TypicalResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/api/v1/show-banner/{slot_id}/{sd_group_id}": {
+            "get": {
+                "description": "Возвращает баннер, для показать в указанном слоте для указанной соц-дем. группы",
+                "tags": [
+                    "Base"
+                ],
+                "summary": "Выбрать баннер для показа",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Slot ID",
+                        "name": "slot_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Group ID",
+                        "name": "sd_group_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/http.BannerResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/api/v1/slot": {
+            "post": {
+                "description": "Добавляет новый слот",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Slots"
+                ],
+                "summary": "Добавить слот",
+                "parameters": [
+                    {
+                        "description": "Slot description",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/http.BaseAdminDescriptionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/http.TypicalResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/api/v1/slot/{id}": {
+            "delete": {
+                "description": "Удаляет слот",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Slots"
+                ],
+                "summary": "Удалить слот",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Slot ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/http.TypicalResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/api/v1/track": {
+            "post": {
+                "description": "Увеличивает счетчик переходов на 1 для указанного баннера в данном слоте в указанной группе.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tracker"
+                ],
+                "summary": "Засчитать переход",
+                "parameters": [
+                    {
+                        "description": "SlotID, BannerID and SDGroupID",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/http.TrackRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/http.TypicalResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "http.BannerResponse": {
+            "type": "object",
+            "properties": {
+                "bannerID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "http.BannerSlotRequest": {
+            "type": "object",
+            "properties": {
+                "bannerID": {
+                    "type": "integer"
+                },
+                "slotID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "http.BaseAdminDescriptionRequest": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                }
+            }
+        },
+        "http.TrackRequest": {
+            "type": "object",
+            "properties": {
+                "bannerID": {
+                    "type": "integer"
+                },
+                "sdgroupID": {
+                    "type": "integer"
+                },
+                "slotID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "http.TypicalResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}

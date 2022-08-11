@@ -1,0 +1,23 @@
+loglevel: debug
+percentexclude: 30
+environment: local
+
+server:
+  host:
+  port: 8080
+
+db:
+  type: sql
+  sql:
+    driver: pgx
+    name: banner
+    user: postgres
+    password: postgres
+    host: localhost
+    port: 5432
+
+rmq:
+  host: localhost
+  port: 5672
+  user: guest
+  pswd: guest

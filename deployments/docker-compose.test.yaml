@@ -1,0 +1,44 @@
+version: "3.4"
+
+services:
+  bas-app-test:
+    build:
+      context: ../
+      dockerfile: build/Dockerfile
+      args:
+        - BIN_FILE=/bas-app-test
+        - CONFIG_FILE=/app/configs/config-test.yaml
+    ports:
+      - "8080:8080"
+
+    networks:
+      - bas
+
+  bas-integration-tests:
+    build:
+      context: ../
+      dockerfile: build/IntegrationTests.Dockerfile
+      args:
+        - BIN_TEST_FILE=/bas-test
+        - CONFIG_FILE=/app/configs/config-test.yaml
+    depends_on:
+      - bas-rabbitmq
+      - bas-app-test
+    networks:
+      - bas
+
+  bas-rabbitmq:
+    image: rabbitmq:3-management-alpine
+    volumes:
+      - rmqdata:/var/lib/rabbitmq/
+      - rmqlog:/var/log/rabbitmq
+    networks:
+      - bas
+
+volumes:
+  pgd:
+  rmqdata:
+  rmqlog:
+
+networks:
+  bas:
