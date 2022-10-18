@@ -1,0 +1,8 @@
+db:
+  type: sql
+  sql:
+    name: banner
+    user: postgres
+    password: postgres
+    host: postgres
+    port: 5432

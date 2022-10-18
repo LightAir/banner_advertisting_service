@@ -1,0 +1,64 @@
+version: "3.4"
+
+services:
+  postgres:
+    image: postgres:14.4
+    environment:
+      POSTGRES_DB: "banner"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - pgd:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - bas
+
+  bas-migration-app:
+    build:
+      context: ../
+      dockerfile: build/Migrate.Dockerfile
+      args:
+        - BIN_FILE=/bas-migrate-app
+        - CONFIG_FILE=/app/configs/config-migrate-docker.yaml
+    depends_on:
+      - postgres
+    networks:
+      - bas
+
+  bas-app:
+    build:
+      context: ../
+      dockerfile: build/Dockerfile
+      args:
+        - BIN_FILE=/bas-app
+        - CONFIG_FILE=/app/configs/config-docker.yaml
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - bas-rabbitmq
+      - bas-migration-app
+      - postgres
+    networks:
+      - bas
+
+  bas-rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rmqdata:/var/lib/rabbitmq/
+      - rmqlog:/var/log/rabbitmq
+    networks:
+      - bas
+
+volumes:
+  pgd:
+  rmqdata:
+  rmqlog:
+
+networks:
+  bas:

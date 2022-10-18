@@ -1,0 +1,16 @@
+loglevel: info
+percentexclude: 30
+environment: local
+
+server:
+  host: bas-app-test
+  port: 8080
+
+db:
+  type: mem
+
+rmq:
+  host: bas-rabbitmq
+  port: 5672
+  user: guest
+  pswd: guest
